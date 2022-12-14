@@ -65,10 +65,13 @@ with st.container():
         st.write(fig2)
 
 with st.container():
-    col3, col4 = st.columns(2)
+    col3, col4, col5 = st.columns([1,2,1])
 
     with col3:
-        st.write(fig3)
+        st.write(' ')
 
     with col4:
         st.write(df)
+
+    with col5:
+        st.write(' ')
