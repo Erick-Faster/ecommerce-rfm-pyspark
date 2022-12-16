@@ -19,9 +19,17 @@ def rfm_data():
     df = pd.read_csv('data/refined/output_customer.csv', encoding='utf-8')
     return df
 
+@st.cache
+def customer_data():
+    df_customer = pd.read_csv('data/refined/output_rfm.csv')
+    df_customer = df_customer.loc[:,['CustomerID', 'Recency', 'Frequency', 'Monetary', 'CustomerClass']].copy()
+    return df_customer
+
 df = rfm_data()
+df_customer = customer_data()
 
 labels = {
+    'CustomerID': 'ID Customer',
     'CustomerClass': 'Customer Class',
     'Count': 'Customer Count',
     '%': 'Percentage of Total Customers',
@@ -45,14 +53,13 @@ fig1.update_layout(title='Number of Customers by Class', showlegend=False)
 
 fig2 = px.scatter(df, x="MeanRecency", y="MeanMonetary", color="CustomerClass",
                  size='Count', color_discrete_sequence=color_sequence, category_orders = category_orders,
-                 hover_data=['CustomerClass', 'Count', 'MeanRecency', 'MeanFrequency', 'MeanMonetary'],
+                 hover_data=['CustomerClass', 'Count', 'MeanRecency', 'MeanMonetary'],
                  labels=labels)
 fig2.update_layout(title='RFM Scatter Plot')
 
-fig3 = px.bar(df, x="MeanRecency", y="CustomerClass", orientation='h', color='CustomerClass',
+fig3 = px.bar(df, x="CustomerClass", y="MeanFrequency", orientation='v', color='CustomerClass',
               color_discrete_sequence=color_sequence,
-              category_orders = category_orders,
-              labels=labels)
+              category_orders = category_orders,labels=labels)
 fig3.update_layout(title='Average Recency (days) by Customer Class', showlegend=False)
 
 with st.container():
@@ -65,13 +72,16 @@ with st.container():
         st.write(fig2)
 
 with st.container():
-    col3, col4, col5 = st.columns([1,2,1])
+    col3, col4, col5, col6 = st.columns([6,1,4,1])
 
     with col3:
-        st.write(' ')
+        st.write(fig3)
 
     with col4:
-        st.write(df)
+        st.empty()
 
     with col5:
-        st.write(' ')
+        st.dataframe(df_customer)
+
+    with col6:
+        st.empty()
