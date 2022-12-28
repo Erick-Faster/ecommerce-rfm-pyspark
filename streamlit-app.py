@@ -60,7 +60,7 @@ fig2.update_layout(title='RFM Scatter Plot')
 fig3 = px.bar(df, x="CustomerClass", y="MeanFrequency", orientation='v', color='CustomerClass',
               color_discrete_sequence=color_sequence,
               category_orders = category_orders,labels=labels)
-fig3.update_layout(title='Average Recency (days) by Customer Class', showlegend=False)
+fig3.update_layout(title='Average Frequency by Customer Class', showlegend=False)
 
 with st.container():
     col1, col2 = st.columns(2)
